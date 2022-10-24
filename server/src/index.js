@@ -6,7 +6,7 @@ require("dotenv").config();
 const gameRoutes = require("./routes/gameRoutes");
 
 const app = express();
-const port = process.env.PORT || 8088;
+const port = process.env.PORT || 5000;
 
 app.use(cors());
 
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/v1/game", gameRoutes);
 
-//notfound url
+//* Not Found URL
 app.all("*", (req, res) => {
   res.json({
     status: 404,
