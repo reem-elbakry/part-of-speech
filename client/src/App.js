@@ -1,11 +1,23 @@
-import logo from "./logo.svg";
 import "./App.css";
+import { useState } from "react";
+
+import Navbar from "./components/Navbar";
+import JoinScreen from "./components/JoinScreen";
+import QuizScreen from "./components/QuizScreen";
 
 function App() {
+  const [isQuizStarted, setIsQuizStarted] = useState(false);
   return (
-    <div className="App">
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
-    </div>
+    <>
+      <Navbar />
+      <div className="container">
+        {isQuizStarted ? (
+          <QuizScreen retry={() => setIsQuizStarted(false)} />
+        ) : (
+          <JoinScreen start={() => setIsQuizStarted(true)} />
+        )}
+      </div>
+    </>
   );
 }
 
