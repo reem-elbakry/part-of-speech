@@ -1,8 +1,10 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import logo from "./../assets/images/logo.png";
 
-const JoinScreen = ({ start }) => {
+const InstructionScreen = () => {
+  const navigate = useNavigate();
   return (
     <>
       <div className="max-w-2xl rounded shadow-lg bg-gray-100 mx-auto mt-12">
@@ -18,19 +20,22 @@ const JoinScreen = ({ start }) => {
             loading="lazy"
           />
 
-          <p className="text-gray-700 text-base mb-2 mt-10">
-            <span className="text-cyan-600 font-bold text-xl">
-              Part Of Speech
-            </span>
-            &nbsp; a category to which a word is assigned in accordance with its
-            syntactic functions. In English the main parts of speech are noun,
-            adjective, verb, adverb.
-          </p>
+          <ol className="text-gray-700 text-base mb-2 mt-10">
+            <li>All Question are for 10 marks.</li>
+            <li>
+              This is a time bound quiz so make sure you finish and submit the
+              quiz within the given time limit.
+            </li>
+            <li>
+              10 points will be deducted from youur score for every wrong
+              answer.
+            </li>
+          </ol>
           <button
             className="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-2 px-4 my-4 rounded"
-            onClick={start}
+            onClick={() => navigate("/join")}
           >
-            Start
+            Next
           </button>
         </div>
       </div>
@@ -38,4 +43,4 @@ const JoinScreen = ({ start }) => {
   );
 };
 
-export default JoinScreen;
+export default InstructionScreen;
