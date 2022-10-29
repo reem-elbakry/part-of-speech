@@ -1,36 +1,60 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import logo from "./../assets/images/logo.png";
 import Question from "./Question";
 import QuizResult from "./QuizResult";
 
-import { GameAPI } from "./APIs/GameAPI";
+import { QuizAPI } from "./APIs/QuizAPI";
+import { useNavigate } from "react-router-dom";
+import { flushSync } from "react-dom";
 
-const QuizScreen = () => {
-  const [QuestionList, setQuestionList] = useState([]);
-  const [currentQuestionIndex, setcurrentQuestionIndex] = useState(0);
-  const [markedAnswers, setmarkedAnswers] = useState(
-    new Array(QuestionList.length) //** Fixed size <10> */
+const QuizScreen = ({ retry }) => {
+  const navigate = useNavigate();
+  let [quizList, setQuizList] = useState([]);
+  let [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [markedAnswers, setMarkedAnswers] = useState(
+    new Array(quizList.length) //** Fixed size <10> */
   );
 
-  //* Check if question ended */
-  const isQuestionEnd = currentQuestionIndex === QuestionList.length;
+  //* Check if quiz ended */
+  const isQuizEnd = currentQuestionIndex === quizList.length;
 
   //* To get words list from backend API */
-  const getWords = async () => {
+  const getQuizList = async () => {
     try {
-      const response = await GameAPI.getWords();
-      setQuestionList(response.data);
+      const response = await QuizAPI.getWords();
+      setQuizList(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  //* Get words list at Mounting */
+  //* Get words list at did Mounting */
   useEffect(() => {
-    getWords();
+    //! warning */
+    flushSync(() => {
+      getQuizList();
+    });
   }, []);
+
+  //**TODO Calculate Result */
+  const calculateFinalScore = () => {
+    let correct = 0;
+    quizList.forEach((question, index) => {
+      if (question.pos === markedAnswers[index]) {
+        correct++;
+      }
+    });
+
+    console.log(markedAnswers);
+
+    return {
+      total: quizList.length,
+      correct: correct,
+      percentage: Math.trunc((correct / quizList.length) * 100),
+    };
+  };
 
   return (
     <>
@@ -46,21 +70,22 @@ const QuizScreen = () => {
             }}
             loading="lazy"
           />
-          {isQuestionEnd ? (
-            <QuizResult />
+          {isQuizEnd ? (
+            <QuizResult
+              result={calculateFinalScore()}
+              retry={() => {
+                retry();
+                navigate("/join");
+              }}
+            />
           ) : (
             <Question
-              question={QuestionList[currentQuestionIndex]}
-              totalQuestions={QuestionList.length}
-              currentQuestion={currentQuestionIndex + 1}
-              setAnswer={(index) => {
-                setmarkedAnswers((arr) => {
-                  let newArr = [...arr];
-                  newArr[currentQuestionIndex] = index;
-                  return newArr;
-                });
-
-                setcurrentQuestionIndex(currentQuestionIndex + 1);
+              question={quizList[currentQuestionIndex]}
+              currentQuestionNum={currentQuestionIndex + 1}
+              totalQuestionsNum={quizList.length}
+              setAnswer={(answer) => {
+                setMarkedAnswers((prevAnswers) => [...prevAnswers, answer]);
+                setCurrentQuestionIndex(currentQuestionIndex + 1);
               }}
             />
           )}

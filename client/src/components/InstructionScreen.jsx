@@ -23,10 +23,6 @@ const InstructionScreen = () => {
           <ol className="text-gray-700 text-base mb-2 mt-10">
             <li>All Question are for 10 marks.</li>
             <li>
-              This is a time bound quiz so make sure you finish and submit the
-              quiz within the given time limit.
-            </li>
-            <li>
               10 points will be deducted from youur score for every wrong
               answer.
             </li>

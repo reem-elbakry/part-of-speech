@@ -10,3 +10,39 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.option {
+  background-color: #2196f3;
+  color: white;
+  font-weight: bold;
+  border-radius: 1.5rem;
+  width: 14rem;
+  padding: 0.5rem 1rem;
+}
+
+.option:hover {
+  background-color: #1976d2;
+}
+
+.correct {
+  background-color: green;
+}
+
+.incorrect {
+  background-color: red;
+}
+
+/* Next Button */
+.next {
+  background-color: #ff00ff;
+  color: white;
+  font-weight: bold;
+  border-radius: 1.5rem;
+  width: 14rem;
+  padding: 0.5rem 1rem;
+  margin-top: 2.5rem;
+}
+
+.next:hover {
+  background-color: #c13fc1;
+}

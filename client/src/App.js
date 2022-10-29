@@ -13,17 +13,22 @@ function App() {
     <>
       <Navbar />
       <div className="container">
-        {isQuizStarted ? (
-          <QuizScreen retry={() => setIsQuizStarted(false)} />
-        ) : (
-          <JoinScreen start={() => setIsQuizStarted(true)} />
-        )}
-        {/* <Routes>
-          <Route
-            path="/join"
-            element={<JoinScreen start={() => setIsQuizStarted(true)} />}
-          />
-        </Routes> */}
+        <Routes>
+          <Route path="/" element={<InstructionScreen />} />
+          {isQuizStarted ? (
+            <Route
+              path="/quiz"
+              element={<QuizScreen retry={() => setIsQuizStarted(false)} />}
+            />
+          ) : (
+            <>
+              <Route
+                path="/join"
+                element={<JoinScreen start={() => setIsQuizStarted(true)} />}
+              />
+            </>
+          )}
+        </Routes>
       </div>
     </>
   );
