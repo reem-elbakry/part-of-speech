@@ -9,7 +9,7 @@ function App() {
   const [isQuizStarted, setIsQuizStarted] = useState(false);
   return (
     <>
-      <Navbar />
+      <Navbar retry={() => setIsQuizStarted(false)} />
       <div className="container">
         {isQuizStarted ? (
           <QuizScreen retry={() => setIsQuizStarted(false)} />

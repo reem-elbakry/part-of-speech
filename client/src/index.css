@@ -46,3 +46,7 @@ body {
 .next:hover {
   background-color: #c13fc1;
 }
+
+.progress-bar {
+  background-color: #c13fc1;
+}

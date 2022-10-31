@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import logo from "./../assets/images/logo.png";
+
 import Question from "./Question";
 import QuizResult from "./QuizResult";
 
@@ -23,6 +24,7 @@ const QuizScreen = ({ retry }) => {
     try {
       const response = await QuizAPI.getWords();
       setQuizList(response.data);
+      console.log("Words List: ");
       console.log(response.data);
     } catch (error) {
       console.log(error);
@@ -31,7 +33,7 @@ const QuizScreen = ({ retry }) => {
 
   //* Get words list at did Mounting */
   useEffect(() => {
-    //! warning */
+    //! Error */
     flushSync(() => {
       getQuizList();
     });
@@ -49,7 +51,7 @@ const QuizScreen = ({ retry }) => {
     flushSync(() => {
       postFinalScoreAndGetRank(correctAnswers * 10);
     });
-    console.log(rank);
+    console.log("Rank: " + rank);
 
     return {
       total: quizList.length,
@@ -58,7 +60,7 @@ const QuizScreen = ({ retry }) => {
     };
   };
 
-  //** Get rank */
+  //** Get rank from API */
   const postFinalScoreAndGetRank = async (finalScore) => {
     const response = await QuizAPI.postScore(finalScore);
     setRank(response.data);
@@ -78,20 +80,20 @@ const QuizScreen = ({ retry }) => {
             }}
             loading="lazy"
           />
-          {isQuizEnd ? (
-            <QuizResult result={calculateResult()} retry={retry} />
-          ) : (
-            <Question
-              question={quizList[currentQuestionIndex]}
-              currentQuestionNum={currentQuestionIndex + 1}
-              totalQuestionsNum={quizList.length}
-              setAnswer={(answer) => {
-                setMarkedAnswers((prevAnswers) => [...prevAnswers, answer]);
-                setCurrentQuestionIndex(currentQuestionIndex + 1);
-              }}
-            />
-          )}
         </div>
+        {isQuizEnd ? (
+          <QuizResult result={calculateResult()} retry={retry} />
+        ) : (
+          <Question
+            question={quizList[currentQuestionIndex]}
+            currentQuestionNum={currentQuestionIndex + 1}
+            totalQuestionsNum={quizList.length}
+            setAnswer={(answer) => {
+              setMarkedAnswers((prevAnswers) => [...prevAnswers, answer]);
+              setCurrentQuestionIndex(currentQuestionIndex + 1);
+            }}
+          />
+        )}
       </div>
     </>
   );
