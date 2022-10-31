@@ -3,7 +3,7 @@ import React from "react";
 const QuizResult = ({ result, retry }) => {
   return (
     <>
-      <h2>Result: {result.percentage}%</h2>
+      <h2>Rank: {result.rank}%</h2>
       <p>
         {" "}
         Selected {result.correct} correct options out of {result.total}{" "}

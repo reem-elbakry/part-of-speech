@@ -5,16 +5,15 @@ import Question from "./Question";
 import QuizResult from "./QuizResult";
 
 import { QuizAPI } from "./APIs/QuizAPI";
-import { useNavigate } from "react-router-dom";
 import { flushSync } from "react-dom";
 
 const QuizScreen = ({ retry }) => {
-  const navigate = useNavigate();
   let [quizList, setQuizList] = useState([]);
   let [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [markedAnswers, setMarkedAnswers] = useState(
     new Array(quizList.length) //** Fixed size <10> */
   );
+  let [rank, setRank] = useState(0);
 
   //* Check if quiz ended */
   const isQuizEnd = currentQuestionIndex === quizList.length;
@@ -38,22 +37,31 @@ const QuizScreen = ({ retry }) => {
     });
   }, []);
 
-  //**TODO Calculate Result */
-  const calculateFinalScore = () => {
-    let correct = 0;
+  //** Calculate Result
+  const calculateResult = () => {
+    let correctAnswers = 0;
     quizList.forEach((question, index) => {
       if (question.pos === markedAnswers[index]) {
-        correct++;
+        correctAnswers++;
       }
     });
 
-    console.log(markedAnswers);
+    flushSync(() => {
+      postFinalScoreAndGetRank(correctAnswers * 10);
+    });
+    console.log(rank);
 
     return {
       total: quizList.length,
-      correct: correct,
-      percentage: Math.trunc((correct / quizList.length) * 100),
+      correct: correctAnswers,
+      rank: rank,
     };
+  };
+
+  //** Get rank */
+  const postFinalScoreAndGetRank = async (finalScore) => {
+    const response = await QuizAPI.postScore(finalScore);
+    setRank(response.data);
   };
 
   return (
@@ -71,13 +79,7 @@ const QuizScreen = ({ retry }) => {
             loading="lazy"
           />
           {isQuizEnd ? (
-            <QuizResult
-              result={calculateFinalScore()}
-              retry={() => {
-                retry();
-                navigate("/join");
-              }}
-            />
+            <QuizResult result={calculateResult()} retry={retry} />
           ) : (
             <Question
               question={quizList[currentQuestionIndex]}

@@ -1,10 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 import logo from "./../assets/images/logo.png";
 
 const JoinScreen = ({ start }) => {
-  const navigate = useNavigate();
   return (
     <>
       <div className="max-w-2xl rounded shadow-lg bg-gray-100 mx-auto mt-12">
@@ -30,10 +28,7 @@ const JoinScreen = ({ start }) => {
           </p>
           <button
             className="bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold py-2 px-4 my-4 rounded"
-            onClick={() => {
-              start();
-              navigate("/quiz");
-            }}
+            onClick={start}
           >
             Start
           </button>

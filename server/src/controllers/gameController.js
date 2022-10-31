@@ -20,6 +20,7 @@ const getWords = (req, res) => {
 //***************** Get User Rank ******************************************/
 const getRank = (req, res) => {
   const { finalScore } = req.body; //number
+  console.log(finalScore);
   // TODO: save the score to the json file?
   jsonReader("./src/data/TestData.json", (err, data) => {
     if (err) {
