@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { flushSync } from "react-dom";
 
 import { motion } from "framer-motion";
 
@@ -13,9 +12,7 @@ const Question = ({
   const [selectedOption, setSelectedOption] = useState(null);
 
   const gotoNextQuestion = () => {
-    flushSync(() => {
-      setAnswer(selectedOption);
-    });
+    setAnswer(selectedOption);
 
     setSelectedOption(null);
   };
@@ -35,7 +32,7 @@ const Question = ({
         className="progress-bar h-1"
         initial={{ width: 0 }}
         animate={{
-          width: `${((currentQuestionNum - 1) / totalQuestionsNum) * 100}%`,
+          width: `${(currentQuestionNum / totalQuestionsNum) * 100}%`,
         }}
       ></motion.div>
 

@@ -6,7 +6,6 @@ import Question from "./Question";
 import QuizResult from "./QuizResult";
 
 import { QuizAPI } from "./APIs/QuizAPI";
-import { flushSync } from "react-dom";
 
 const QuizScreen = ({ retry }) => {
   let [quizList, setQuizList] = useState([]);
@@ -24,8 +23,6 @@ const QuizScreen = ({ retry }) => {
     try {
       const response = await QuizAPI.getWords();
       setQuizList(response.data);
-      console.log("Words List: ");
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -34,9 +31,7 @@ const QuizScreen = ({ retry }) => {
   //* Get words list at did Mounting */
   useEffect(() => {
     //! Error */
-    flushSync(() => {
-      getQuizList();
-    });
+    getQuizList();
   }, []);
 
   //** Calculate Result
@@ -48,10 +43,7 @@ const QuizScreen = ({ retry }) => {
       }
     });
 
-    flushSync(() => {
-      postFinalScoreAndGetRank(correctAnswers * 10);
-    });
-    console.log("Rank: " + rank);
+    postFinalScoreAndGetRank(correctAnswers * 10);
 
     return {
       total: quizList.length,
