@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { motion } from "framer-motion";
 
@@ -17,6 +17,9 @@ const Question = ({
     setSelectedOption(null);
   };
 
+  useEffect(() => {
+    console.log("Question Component!");
+  }, []);
   return (
     <>
       {/* Question Header */}
